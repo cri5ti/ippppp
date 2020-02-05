@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {render} from 'react-dom';
-import {Shell} from "./shell/shell";
+import {Games} from "./views/games";
 
 
 const App = () => (
-    <Shell/>
+    <Games/>
 );
 
 render(<App/>, document.body.appendChild(document.createElement('div')));

@@ -1,6 +1,6 @@
 .idea
 .vs
 node_modules
-
+*.csproj*
 bin
 obj

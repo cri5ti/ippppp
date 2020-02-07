@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System;
+using IP5.Services;
 
 namespace IP5.Controllers
 {
@@ -11,36 +12,43 @@ namespace IP5.Controllers
 	[Route("[controller]")]
 	public class PlayersController : ControllerBase
 	{
+		private readonly IPlayersService _playerService;
 		private readonly ILogger<PlayersController> _logger;
 
-		public PlayersController(ILogger<PlayersController> logger)
+		public PlayersController(IPlayersService playerService, ILogger<PlayersController> logger)
 		{
+			_playerService = playerService;
 			_logger = logger;
 		}
 
 		[HttpGet("{code?}")]
-		public IEnumerable<Player> Get(string code)
+		public IEnumerable<Player> Get([FromRoute] string code)
 		{
-			var data = getData();
-
-			var list = data.ToList();
-
 			if (!String.IsNullOrEmpty(code)) {
-				return new[] { list.Find((item) => item.Code == code) };
+				return new[] { _playerService.Get(code)};
 			}
 
-			return data;
+			return _playerService.GetAll();
 		}
 
-		private IEnumerable<Player> getData() {
-			return new[] {
-				new Player {Code = "jl" , Description = "Joel", Wins = 3, Losses = 6},
-				new Player {Code = "jan", Description = "Jan", Wins = 5, Losses = 11, IsChampion = true},
-				new Player {Code = "andy" , Description = "Andy", Wins = 11, Losses = 9},
-			};
-		} 
+		[HttpPut]
+		public void Create(Player player)
+		{
+			_playerService.Add(player);
+			//return _playerService.GetAll();
+		}
+
+		[HttpDelete]
+		public void Delete(string code)
+		{
+			_playerService.Delete(code);
+			//return _playerService.GetAll();
+		}
 	}
 }
+
+
+
 
 
 

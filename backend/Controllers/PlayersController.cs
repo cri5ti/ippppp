@@ -24,15 +24,25 @@ namespace IP5.Controllers
 		[HttpGet("{code?}")]
 		public IEnumerable<Player> Get([FromRoute] string code)
 		{
-			var data = _playerService.GetPlayers();
-
-			var list = data.ToList();
-
 			if (!String.IsNullOrEmpty(code)) {
-				return new[] { list.Find((item) => item.Code == code) };
+				return new[] { _playerService.Get(code)};
 			}
 
-			return data;
+			return _playerService.GetAll();
+		}
+
+		[HttpPut]
+		public void Create(Player player)
+		{
+			_playerService.Add(player);
+			//return _playerService.GetAll();
+		}
+
+		[HttpDelete]
+		public void Delete(string code)
+		{
+			_playerService.Delete(code);
+			//return _playerService.GetAll();
 		}
 	}
 }

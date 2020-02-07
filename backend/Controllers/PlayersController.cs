@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System;
+using IP5.Services;
 
 namespace IP5.Controllers
 {
@@ -11,17 +12,19 @@ namespace IP5.Controllers
 	[Route("[controller]")]
 	public class PlayersController : ControllerBase
 	{
+		private readonly IPlayersService _playerService;
 		private readonly ILogger<PlayersController> _logger;
 
-		public PlayersController(ILogger<PlayersController> logger)
+		public PlayersController(IPlayersService playerService, ILogger<PlayersController> logger)
 		{
+			_playerService = playerService;
 			_logger = logger;
 		}
 
 		[HttpGet("{code?}")]
-		public IEnumerable<Player> Get(string code)
+		public IEnumerable<Player> Get([FromRoute] string code)
 		{
-			var data = getData();
+			var data = _playerService.GetPlayers();
 
 			var list = data.ToList();
 
@@ -31,16 +34,11 @@ namespace IP5.Controllers
 
 			return data;
 		}
-
-		private IEnumerable<Player> getData() {
-			return new[] {
-				new Player {Code = "jl" , Description = "Joel", Wins = 3, Losses = 6},
-				new Player {Code = "jan", Description = "Jan", Wins = 5, Losses = 11, IsChampion = true},
-				new Player {Code = "andy" , Description = "Andy", Wins = 11, Losses = 9},
-			};
-		} 
 	}
 }
+
+
+
 
 
 

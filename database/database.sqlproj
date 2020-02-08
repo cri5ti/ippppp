@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <PostDeploy Include="seed.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="player.sql" />

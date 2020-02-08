@@ -35,14 +35,12 @@ namespace IP5.Controllers
 		public void Create(Player player)
 		{
 			_playerService.Add(player);
-			//return _playerService.GetAll();
 		}
 
 		[HttpDelete]
 		public void Delete(string code)
 		{
 			_playerService.Delete(code);
-			//return _playerService.GetAll();
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using IP5.Model;
 using IP5.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +28,9 @@ namespace IP5.Controllers
 		}
 		
 		[HttpGet("{code}")]
-		public async IAsyncEnumerable<Player> GetByCode([FromRoute] string code)
+		public Task<Player> GetByCode([FromRoute] string code)
 		{
-			yield return await _playerService.Get(code);
+			return _playerService.Get(code);
 		}
 
 		[HttpPut]

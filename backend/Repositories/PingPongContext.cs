@@ -9,6 +9,12 @@ namespace IP5.Repositories
 
     public PingPongContext(DbContextOptions<PingPongContext> options) : base(options)
     { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      modelBuilder.Entity<DbPlayer>()
+        .ToTable("player");
+    }
   }
 
 

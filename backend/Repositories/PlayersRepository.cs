@@ -1,45 +1,70 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using IP5.Extensions;
 using IP5.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace IP5.Repositories
 {
     public interface IPlayersRepository
     {
-        List<Player> GetAll();
-        Player Get(string code);
-        void Add(Player player);
-        void Delete(string code);
+        IAsyncEnumerable<Player> GetAll();
+        Task<Player> Get(string code);
+        Task Add(Player player);
+        Task Delete(string code);
     }
 
     public class PlayersRepository : IPlayersRepository
     {
-        public List<Player> GetAll()
+        private readonly PingPongContext _db;
+
+        public PlayersRepository(PingPongContext db)
         {
-            return _data;
+            _db = db;
         }
 
-        public Player Get(string code)
+        public IAsyncEnumerable<Player> GetAll()
         {
-            return _data.First(i => i.Code == code);
+            return _db.Players
+                .Select(i => new Player
+                {
+                    Code = i.Id.ToBase64(),
+                    Description = i.Name,
+                    Email = i.Email
+                })
+                .AsAsyncEnumerable();
+        }
+        
+        public Task<Player> Get(string code)
+        {
+            var id = code.ToGuid();
+            return _db.Players
+                .Where(i => i.Id == id)
+                .Select(i => new Player
+                {
+                    Code = i.Id.ToBase64(),
+                    Description = i.Name,
+                    Email = i.Email
+                })
+                .FirstAsync();
         }
 
-        public void Add(Player player)
+        public Task Add(Player player)
         {
-            _data.Add(player);
+            _db.Players.Add(new DbPlayer
+            {
+                Name = player.Description,
+                Email = player.Email
+            });
+            return _db.SaveChangesAsync();
         }
 
-        public void Delete(string code)
+        public Task Delete(string code)
         {
-            var index = _data.FindIndex(i => i.Code == code);
-            _data.RemoveAt(index);
+            var player = new DbPlayer {Id = code.ToGuid()};
+            _db.Players.Remove(player);
+            return _db.SaveChangesAsync();
         }
-
-        private readonly List<Player> _data = new List<Player>()
-        {
-            new Player {Code = "jl", Description = "Joel", Wins = 3, Losses = 6},
-            new Player {Code = "jan", Description = "Jan", Wins = 5, Losses = 11, IsChampion = true},
-            new Player {Code = "andy", Description = "Andy", Wins = 11, Losses = 9}
-        };
     }
 }

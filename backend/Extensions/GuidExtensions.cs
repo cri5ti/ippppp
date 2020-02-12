@@ -1,14 +1,33 @@
 using System;
+using System.Buffers.Text;
+using System.Runtime.InteropServices;
 
 namespace IP5.Extensions
 {
 	public static class GuidExtensions
 	{
+		private const byte ForwardSlashByte = (byte)'/';
+		private const byte PlusByte = (byte)'+';
+		private const char Underscore = '_';
+		private const char Dash = '-';
+		
 		public static string ToBase64(this Guid guid)
 		{
-			var encoded = Convert.ToBase64String(guid.ToByteArray());
-			encoded = encoded.Replace("/", "_").Replace("+", "-");
-			return encoded.Substring(0, 22);
+			Span<byte> raw = stackalloc byte[16];
+			Span<byte> utf8 = stackalloc byte[24];
+			MemoryMarshal.TryWrite(raw, ref guid);
+			Base64.EncodeToUtf8(raw, utf8, out _, out _);
+			Span<char> b64 = stackalloc char[22];
+			for (var i = 0; i < 22; i++)
+			{
+				b64[i] = utf8[i] switch
+				{
+					ForwardSlashByte => Dash,
+					PlusByte => Underscore,
+					_ => (char) utf8[i]
+				};
+			}
+			return new string(b64);
 		}
 
 		public static Guid ToGuid(this string value)

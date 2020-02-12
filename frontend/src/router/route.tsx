@@ -22,7 +22,7 @@ export function Route(props: IRouteProps) {
         //clean up phase ~ componentWillUnmount
         return () => {
             routerCtrl.unregister(this);
-            removeEventListener('popstate', this.handlePop)
+            removeEventListener('popstate', handlePop)
         }
 
     }, []);

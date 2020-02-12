@@ -3,7 +3,7 @@ import routerCtrl from "./index";
 
 interface ILinkProps{
     to,
-    replace,
+    replace?,
     children
 }
 

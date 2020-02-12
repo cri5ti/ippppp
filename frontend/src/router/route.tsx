@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import routerCtrl from "./index";
 
 interface IRouteProps {
@@ -10,19 +10,14 @@ interface IRouteProps {
 
 export function Route(props: IRouteProps) {
     const {path, exact, component, render} = props;
-
-    function handlePop() {
-        this.forceUpdate()
-    }
+    const [, forceUpdate] = useState();
 
     useEffect(() => {
-        addEventListener('popstate', handlePop);
-        routerCtrl.register(this);
+        addEventListener('popstate', forceUpdate);
 
         //clean up phase ~ componentWillUnmount
         return () => {
-            routerCtrl.unregister(this);
-            removeEventListener('popstate', handlePop)
+            removeEventListener('popstate', forceUpdate)
         }
 
     }, []);

@@ -17,7 +17,7 @@ const Games = () => {
     return (
         <div className="games">
             {game.loading && <div>Loading</div>}
-            {game.games.map(i => <Game game={i}/>)}
+            {game.games.map((i,ix) => <Game game={i} key={ix}/>)}
         </div>
     )
 

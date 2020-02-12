@@ -1,24 +1,16 @@
 import React from "react";
 
 class RouterCtrl{
-    private _instances = [];
-
-    public register(component){
-        this._instances.push(component);
-    }
-
-    public unregister(component){
-        this._instances.splice(this._instances.indexOf(component), 1);
-    }
+    private _update = () => window.dispatchEvent(new Event("popstate"));
 
     public historyPush(path){
         history.pushState({}, null, path);
-        this._instances.forEach(instance => instance.forceUpdate())
+        this._update()
     }
 
     public historyReplace(path){
         history.replaceState({}, null, path);
-        this._instances.forEach(instance => instance.forceUpdate())
+        this._update();
     }
 
     public matchPath(pathname, options){
@@ -33,7 +25,7 @@ class RouterCtrl{
             }
         }
 
-        const match = new RegExp(`^${path}`).exec(pathname)
+        const match = new RegExp(`^${path}`).exec(pathname);
 
         if (!match)
             return null;

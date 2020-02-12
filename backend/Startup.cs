@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IP5.Repositories;
-using IP5.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,7 +32,6 @@ namespace IP5
 			});
 
 			services.AddTransient<IPlayersRepository, PlayersRepository>();
-			services.AddTransient<IPlayersService, PlayersService>();
 
 			services.AddControllers();
 		}

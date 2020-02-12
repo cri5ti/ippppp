@@ -1,7 +1,7 @@
 import React from "react";
 
 class RouterCtrl{
-    private _update = () => window.dispatchEvent(new Event("popstate"));
+    private _update = () => dispatchEvent(new PopStateEvent('popstate'));
 
     public historyPush(path){
         history.pushState({}, null, path);

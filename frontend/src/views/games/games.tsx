@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {cls} from "../util/react";
+import {cls} from "../../util/react";
 
 const css = require('./games.scss');
 
-export const Games = () => {
+const Games = () => {
     const [game, setGames] = useState({loading: true, games: []});
 
     useEffect(() => {
@@ -33,3 +33,4 @@ const Game = ({game}) =>
     </div>;
 
 
+export default Games;

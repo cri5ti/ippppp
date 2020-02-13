@@ -3,6 +3,7 @@ name: .NET Core
 on: [push]
 
 jobs:
+
   build:
 
     runs-on: ubuntu-latest
@@ -20,3 +21,15 @@ jobs:
 
     - name: Test with dotnet
       run: dotnet test --configuration Release
+
+  deploy:
+    needs: build
+    name: Deploy App
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: deploy to azure web app
+      uses: azure/appservice-actions/webapp@master
+      with: 
+        app-name: ip5-backend
+        publish-profile: ${{ secrets.azureBackendPublishProfile }}  

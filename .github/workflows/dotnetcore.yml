@@ -25,12 +25,12 @@ jobs:
     - name: dotnet publish
       run: dotnet publish -c Release -o dotnetcorewebapp
 
-  deploy:
-    needs: build
-    name: Deploy App
-    runs-on: ubuntu-latest
+    # deploy:
+    #   needs: build
+    #   name: Deploy App
+    #   runs-on: ubuntu-latest
+    # steps:
     
-    steps:
     - name: deploy to azure web app
       uses: azure/webapps-deploy@v1
       with: 

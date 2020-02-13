@@ -29,7 +29,7 @@ jobs:
     
     steps:
     - name: deploy to azure web app
-      uses: azure/appservice-actions/webapp@master
+      uses: azure/webapps-deploy@v1
       with: 
         app-name: ip5-backend
         publish-profile: ${{ secrets.azureBackendPublishProfile }}  

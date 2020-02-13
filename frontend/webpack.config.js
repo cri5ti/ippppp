@@ -42,7 +42,8 @@ module.exports = {
                 target: 'http://127.0.0.1:5000',
                 pathRewrite: {'^/api' : ''}
             }
-        }
+        },
+        historyApiFallback: true
     },
     plugins: [
         new HtmlWebpackPlugin({ template: './src/index.html' }),

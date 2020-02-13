@@ -7,7 +7,7 @@ namespace IP5.Extensions
 		public static string ToBase64(this Guid guid)
 		{
 			var encoded = Convert.ToBase64String(guid.ToByteArray());
-			encoded = encoded.Replace("/", "-").Replace("+", "-");
+			encoded = encoded.Replace("/", "_").Replace("+", "-");
 			return encoded.Substring(0, 22);
 		}
 

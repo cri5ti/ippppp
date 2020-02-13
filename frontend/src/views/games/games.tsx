@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {cls} from "../util/react";
+import {cls} from "../../util/react";
 
 const css = require('./games.scss');
 
-export const Games = () => {
+const Games = () => {
     const [game, setGames] = useState({loading: true, games: []});
 
     useEffect(() => {
@@ -17,7 +17,7 @@ export const Games = () => {
     return (
         <div className="games">
             {game.loading && <div>Loading</div>}
-            {game.games.map(i => <Game game={i}/>)}
+            {game.games.map((i,ix) => <Game game={i} key={ix}/>)}
         </div>
     )
 
@@ -33,3 +33,4 @@ const Game = ({game}) =>
     </div>;
 
 
+export default Games;

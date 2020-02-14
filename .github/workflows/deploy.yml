@@ -1,0 +1,28 @@
+name: Deploy
+
+jobs:
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.100
+
+    - name: dotnet publish
+      run: |
+        pushd backend
+        dotnet publish -c Release -o dotnetcorewebapp
+        popd
+
+    - name: deploy to azure web app
+      uses: azure/webapps-deploy@v1
+      with: 
+        app-name: ip5-backend
+        package: '.backend/dotnetcorewebapp'
+        publish-profile: ${{ secrets.azureBackendPublishProfile }}  

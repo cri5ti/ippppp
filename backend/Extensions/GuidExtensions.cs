@@ -11,7 +11,7 @@ namespace IP5.Extensions
 		private const char Underscore = '_';
 		private const char Dash = '-';
 		
-		// Convert GUID to Base64
+		// Convert GUID to Base64 ... really fast
 		public static string ToBase64(this Guid guid)
 		{
 			Span<byte> raw = stackalloc byte[16];

@@ -26,5 +26,5 @@ jobs:
       uses: azure/webapps-deploy@v1
       with: 
         app-name: ip5-backend
-        package: '.backend/dotnetcorewebapp'
+        package: './backend/dotnetcorewebapp'
         publish-profile: ${{ secrets.azureBackendPublishProfile }}  

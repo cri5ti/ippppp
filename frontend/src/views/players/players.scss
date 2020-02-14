@@ -1,0 +1,27 @@
+.players{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+
+  .player{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    .description {
+      grid-column: 1 / 3;
+      grid-row: 1;
+    }
+
+    .email {
+      grid-column: 2 / 4;
+      grid-row: 1 / 3;
+    }
+  }
+
+  .form{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+}

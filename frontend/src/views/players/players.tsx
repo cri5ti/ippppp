@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {cls} from "../../util/react";
 import {List} from "../../ui/list/list";
+import {playersCtrl} from "./players.ctrl";
 
 const css = require('./players.scss');
 
@@ -14,7 +15,10 @@ const Players = () => {
 
     useEffect(() => {
         async function load() {
-            const players = await (await fetch("/api/players")).json();
+            const players = await playersCtrl.getAll();
+
+            debugger
+
             setGames({loading: false, players});
         }
 

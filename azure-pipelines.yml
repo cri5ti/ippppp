@@ -16,6 +16,8 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    pushd frontend
     npm install
     npm build
+    popd
   displayName: 'build'

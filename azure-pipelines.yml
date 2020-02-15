@@ -22,10 +22,8 @@ steps:
     popd
   displayName: 'build'
 
-- task: ArchiveFiles@2
+- task: PublishBuildArtifacts@1
   inputs:
-    rootFolderOrFile: './frontend/dist'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
+    PathtoPublish: './frontend/dist'
+    ArtifactName: 'frontend'
+    publishLocation: 'Container'

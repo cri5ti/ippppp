@@ -21,3 +21,11 @@ steps:
     npm build
     popd
   displayName: 'build'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: './frontend/dist'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true

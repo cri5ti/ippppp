@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from "react";
+import {API_URL} from "../../config";
+import {BusyOverlay} from "../../ui/busy";
 import {cls} from "../../util/react";
+import {Page} from "../shell/shell";
 
 const css = require('./games.scss');
 
@@ -8,22 +11,24 @@ const Games = () => {
 
     useEffect(() => {
         async function load() {
-            const games = await (await fetch("/api/games")).json();
+            const games = await (await fetch(API_URL + "/games")).json();
             setGames({ loading: false, games});
         }
         load();
     }, []);
 
     return (
-        <div className="games">
-            {game.loading && <div>Loading</div>}
-            {game.games.map((i,ix) => <Game game={i} key={ix}/>)}
-        </div>
+        <Page title="Games">
+            <div className="games">
+                {game.loading && <BusyOverlay/>}
+                {game.games.map((i,ix) => <GameItem game={i} key={ix}/>)}
+            </div>
+        </Page>
     )
 
 };
 
-const Game = ({game}) =>
+const GameItem = ({game}) =>
     <div className={cls("game", game.ongoing && 'ongoing')}>
         <div className="player a">{game.player1}</div>
         <div className="score a">{game.score1}</div>

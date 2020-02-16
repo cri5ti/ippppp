@@ -23,7 +23,8 @@ namespace IP5.Controllers
 				new Game {Player1 = "Joel", Player2 = "Rohn", Score1 = 3, Score2 = 6, Ongoing = true},
 				new Game {Player1 = "Jan", Player2 = "Bram", Score1 = 5, Score2 = 11},
 				new Game {Player1 = "Andy", Player2 = "Raul", Score1 = 11, Score2 = 9},
-			};
+        new Game {Player1 = "Danny", Player2 = "Tony", Score1 = 11, Score2 = 9},
+      };
 		}
 	}
 }

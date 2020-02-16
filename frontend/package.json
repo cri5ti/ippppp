@@ -26,7 +26,7 @@
   },
   "scripts": {
     "clean:build": "rm -fr ./dist",
-    "build": "webpack-cli",
+    "build": "set API_URL=http://example.com&set NODE_ENV=production& webpack-cli",
     "start": "webpack-dev-server",
     "lint": "tslint --fix './src/**/*.ts?(x)'",
     "test": "jest"

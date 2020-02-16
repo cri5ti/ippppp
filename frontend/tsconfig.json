@@ -5,7 +5,6 @@
     "lib": ["es2018", "dom"],
     "moduleResolution": "node",
     "baseUrl": "./packages",
-    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,

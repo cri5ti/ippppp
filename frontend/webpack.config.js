@@ -2,8 +2,13 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
+const mode = process.env.NODE_ENV || 'development';
+const dev = mode === 'development';
+
+console.log('NODE_ENV = ' + mode);
+
 module.exports = {
-    mode: process.env.NODE_ENV || 'development',
+    mode,
     entry: './src/index.tsx',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -20,7 +25,12 @@ module.exports = {
                 exclude: /node_modules/,
                 options: {
                     // configFile,
-                    projectReferences: true
+                    projectReferences: true,
+                    compilerOptions: {
+                        sourceMap: dev,
+                        declaration: dev,
+                        declarationMap: dev
+                    }
                 }
             },
             {
@@ -33,7 +43,7 @@ module.exports = {
             }
         ],
     },
-    devtool: "source-map",
+    devtool: dev ? "source-map" : undefined,
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         port: 9000,
@@ -47,6 +57,6 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({ template: './src/index.html' }),
-        new Dotenv()
+        new Dotenv({ systemvars: true })
     ]
 };

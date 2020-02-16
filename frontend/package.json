@@ -1,7 +1,7 @@
 {
   "name": "ip5",
   "version": "0.0.1",
-  "devDependencies": {
+  "dependencies": {
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
     "@types/react-router": "^5.1.4",

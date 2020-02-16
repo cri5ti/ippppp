@@ -4,7 +4,6 @@
     "target": "es2020",
     "lib": ["es2018", "dom"],
     "moduleResolution": "node",
-    "rootDir": ".",
     "baseUrl": "./packages",
     "composite": true,
     "declaration": true,

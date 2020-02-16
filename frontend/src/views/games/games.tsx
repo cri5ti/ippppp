@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {API_URL} from "../../config";
 import {cls} from "../../util/react";
 
 const css = require('./games.scss');
@@ -8,7 +9,7 @@ const Games = () => {
 
     useEffect(() => {
         async function load() {
-            const games = await (await fetch("/api/games")).json();
+            const games = await (await fetch(API_URL + "/games")).json();
             setGames({ loading: false, games});
         }
         load();

@@ -16,9 +16,9 @@ const App = () => (
 function LandingPage(){
     return (
         <div style={{display: "flex", alignItems: "center", justifyContent: "center", flex: 1}}>
-            Welcome to IP55555!!
-            <Link to={"/games"}>Go to awesome games!</Link>
-            <Link to={"/players"}>Go to awesome players!</Link>
+            <h1>Ping?</h1>
+            <li><Link to={"/games"}>Games</Link></li>
+            <li><Link to={"/players"}>Players</Link></li>
         </div>
     );
 }

@@ -9,6 +9,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  API_URL: https://ip5-backend.azurewebsites.net
+
 steps:
 - task: NodeTool@0
   inputs:

@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Players snapshot testing 1`] = `
+<div>
+  <div
+    class="page"
+  >
+    <header>
+      Players
+    </header>
+    <main>
+      <nav>
+        <a
+          href="/players/create"
+        >
+          Create player
+        </a>
+      </nav>
+      <div
+        class="players"
+      >
+        <ol
+          class="list"
+        >
+          <li>
+            <div
+              class="player"
+            >
+              <img
+                src="https://secure.gravatar.com/avatar/d4c74594d841139328695756648b6bd6?size=64"
+              />
+              <span
+                class="name"
+              >
+                John
+              </span>
+            </div>
+          </li>
+          <li>
+            <div
+              class="player"
+            >
+              <img
+                src="https://secure.gravatar.com/avatar/de21b8c123847c80205e93b301437b45?size=64"
+              />
+              <span
+                class="name"
+              >
+                Doe
+              </span>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </main>
+  </div>
+</div>
+`;

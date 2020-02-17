@@ -1,20 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {Link, Route, Switch, useRouteMatch, withRouter} from "react-router-dom";
-import {API_URL} from "../../config";
 import {BusyOverlay} from "../../ui/busy";
 import {List} from "../../ui/list/list";
 import {md5} from "../../util/md5";
 import {Page} from "../shell/shell";
 import {CreatePlayer} from "./create_player";
 import {PlayerDetails} from "./player_details";
+import {Player, playersApi} from "./players_api";
 
 const css = require('./players.scss');
 
-interface IPlayer {
-    description: string;
-    email: string;
-    code: string;
-}
 
 
 const PlayersPage = () => {
@@ -42,7 +37,7 @@ const PlayersList = withRouter(({history}) => {
 
     useEffect(() => {
         async function load() {
-            const players = await (await fetch(API_URL + "/players")).json();
+            const players = await playersApi.getAll();
             setPlayers({loading: false, players});
         }
         load();
@@ -67,7 +62,7 @@ const PlayersList = withRouter(({history}) => {
 });
 
 
-const PlayerItem = (props: IPlayer) => {
+const PlayerItem = (props: Player) => {
     const {description, email} = props;
 
     return (

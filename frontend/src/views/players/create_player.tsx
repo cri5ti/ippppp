@@ -2,7 +2,7 @@ import React, {useCallback, useState} from "react";
 import {withRouter} from "react-router";
 import {API_URL} from "../../config";
 import {BackLink, DefaultButton} from "../../ui/back_button";
-import {BusyOverlay} from "../../ui/busy";
+import {BusyOverlay} from "../../ui/busy/busy";
 import {Page} from "../shell/shell";
 
 export const CreatePlayer = withRouter(({history}) => {

@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Link, Route, Switch, useRouteMatch, withRouter} from "react-router-dom";
-import {BusyOverlay} from "../../ui/busy/busy";
 import {List} from "../../ui/list/list";
 import {md5} from "../../util/md5";
 import {Page} from "../shell/shell";
@@ -9,8 +8,6 @@ import {PlayerDetails} from "./player_details";
 import {Player, playersApi} from "./players_api";
 
 const css = require('./players.scss');
-
-
 
 const PlayersPage = () => {
     const {path} = useRouteMatch();
@@ -32,16 +29,7 @@ const PlayersPage = () => {
 
 
 const PlayersList = withRouter(({history}) => {
-    const [player, setPlayers] = useState({loading: true, players: []});
     const {url} = useRouteMatch();
-
-    useEffect(() => {
-        async function load() {
-            const players = await playersApi.getAll();
-            setPlayers({loading: false, players});
-        }
-        load();
-    }, []);
 
     return (
         <Page title="Players">
@@ -50,12 +38,9 @@ const PlayersList = withRouter(({history}) => {
             </nav>
 
             <div className="players">
-                {player.loading && <BusyOverlay/>}
-
                 <List itemRender={player => <PlayerItem {...player}/>}
-                      data={player.players}
-                      onItemClick={(i) => history.push(url + '/' + i.code)}
-                />
+                      data={playersApi.getAll()}
+                      onItemClick={(i) => history.push(url + '/' + i.code)}/>
             </div>
         </Page>
     )

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Link, Route, Switch, useRouteMatch, withRouter} from "react-router-dom";
-import {BusyOverlay} from "../../ui/busy";
+import {BusyOverlay} from "../../ui/busy/busy";
 import {List} from "../../ui/list/list";
 import {md5} from "../../util/md5";
 import {Page} from "../shell/shell";

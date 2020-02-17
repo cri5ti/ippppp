@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {API_URL} from "../../config";
-import {BusyOverlay} from "../../ui/busy";
+import {BusyOverlay} from "../../ui/busy/busy";
 import {cls} from "../../util/react";
 import {Page} from "../shell/shell";
 

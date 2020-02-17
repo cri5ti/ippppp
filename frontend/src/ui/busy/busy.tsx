@@ -1,4 +1,4 @@
-import React, {ReactElement, useEffect, useState} from "react";
+import React, {ReactNode, useEffect, useState} from "react";
 
 require('./busy.scss');
 
@@ -12,8 +12,8 @@ export const BusyOverlay = () => (
     </div>
 );
 
-export const BusyRender = <T extends {}>(props: {promise: Promise<T>, children: (data: T) => Array<ReactElement> | ReactElement}) => {
-    const {promise} = props;
+export const BusyRender = <T extends unknown>(props: {promise: Promise<T>, children: (data: T) => ReactNode}) => {
+    const {promise, children} = props;
     const [state, setState] = useState<{loading: boolean, data: T}>({loading: true, data: null});
 
     useEffect(() => {
@@ -25,13 +25,7 @@ export const BusyRender = <T extends {}>(props: {promise: Promise<T>, children: 
         });
     }, []);
 
-    if(state.loading){
-        return <BusyOverlay/>
-    }
+    if(state.loading) return <BusyOverlay/>;
 
-    return (
-        <>
-            {props.children(state.data)}
-        </>
-    )
+    return <>{children(state.data)}</>;
 };

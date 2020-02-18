@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {useHistory, useParams} from "react-router";
 import {BackLink, DefaultButton} from "../../ui/back_button";
 import {BusyRender} from "../../ui/busy/busy";
@@ -10,7 +10,7 @@ export const PlayerDetails = () => {
     const {code} = useParams();
     const history = useHistory();
 
-    const getOne = () => playersApi.getOne(code);
+    const getOne = useCallback(() => playersApi.getOne(code), [code]);
 
     async function onDelete() {
         const res = await playersApi.remove(code);

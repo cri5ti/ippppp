@@ -1,31 +1,19 @@
-import React, {useEffect, useState} from "react";
-import {API_URL} from "../../config";
-import {BusyOverlay} from "../../ui/busy/busy";
+import React from "react";
 import {cls} from "../../util/react";
 import {Page} from "../shell/shell";
+import {gamesApi} from "./games_api";
+import {List} from "../../ui/list/list";
 
 const css = require('./games.scss');
 
 const Games = () => {
-    const [game, setGames] = useState({loading: true, games: []});
-
-    useEffect(() => {
-        async function load() {
-            const games = await (await fetch(API_URL + "/games")).json();
-            setGames({ loading: false, games});
-        }
-        load();
-    }, []);
-
     return (
         <Page title="Games">
-            <div className="games">
-                {game.loading && <BusyOverlay/>}
-                {game.games.map((i,ix) => <GameItem game={i} key={ix}/>)}
-            </div>
+            <List data={gamesApi.getAll}
+                  className={"games"}
+                  itemRender={(i) => <GameItem game={i}/>}/>
         </Page>
     )
-
 };
 
 const GameItem = ({game}) =>

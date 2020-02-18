@@ -5,13 +5,12 @@ import {BusyRender} from "../../ui/busy/busy";
 import {Page} from "../shell/shell";
 import {Player, playersApi} from "./players_api";
 
+
 export const PlayerDetails = () => {
     const {code} = useParams();
     const history = useHistory();
 
-    async function getPlayer(){
-        return await playersApi.getOne(code);
-    }
+    const getOne = () => playersApi.getOne(code);
 
     async function onDelete() {
         const res = await playersApi.remove(code);
@@ -20,7 +19,7 @@ export const PlayerDetails = () => {
     }
 
     return (
-        <BusyRender<Player> promise={getPlayer()}>
+        <BusyRender<Player> promise={getOne}>
             {(player) => (
                 <Page title={player.description}>
                     <nav>

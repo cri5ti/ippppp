@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {Link, Route, Switch, useRouteMatch, withRouter} from "react-router-dom";
 import {List} from "../../ui/list/list";
 import {md5} from "../../util/md5";
@@ -39,7 +39,7 @@ const PlayersList = withRouter(({history}) => {
 
             <div className="players">
                 <List itemRender={player => <PlayerItem {...player}/>}
-                      data={playersApi.getAll()}
+                      data={playersApi.getAll}
                       onItemClick={(i) => history.push(url + '/' + i.code)}/>
             </div>
         </Page>

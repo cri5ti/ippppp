@@ -1,9 +1,9 @@
 import React, {useCallback, useState} from "react";
 import {withRouter} from "react-router";
-import {API_URL} from "../../config";
 import {BackLink, DefaultButton} from "../../ui/back_button";
-import {BusyOverlay} from "../../ui/busy/busy";
 import {Page} from "../shell/shell";
+import {playersApi} from "./players_api";
+import {BusyOverlay} from "../../ui/busy/busy";
 
 export const CreatePlayer = withRouter(({history}) => {
     const [form, setForm] = useState<{ name: string, email: string }>({name: null, email: null});
@@ -12,14 +12,7 @@ export const CreatePlayer = withRouter(({history}) => {
     const onSubmit = useCallback(async (ev) => {
         ev.preventDefault();
         setBusy(true);
-        await fetch(API_URL + "/players", {
-            method: "PUT",
-            body: JSON.stringify({Email: form.email, Description: form.name}),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
+        await playersApi.create({Email: form.email, Description: form.name});
         setBusy(false);
         history.replace('/players');
     }, [form]);

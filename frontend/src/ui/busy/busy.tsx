@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode, useEffect, useState} from "react";
 
 require('./busy.scss');
 
@@ -11,3 +11,26 @@ export const BusyOverlay = () => (
         <Spinner/>
     </div>
 );
+
+export const BusyRender = <T extends unknown>(props: {promise: () => Promise<T>, children: (data: T) => ReactNode}) => {
+    const {promise, children} = props;
+    const [state, setState] = useState<{loading: boolean, data: T}>({loading: true, data: null});
+
+    useEffect(() => {
+        if(!promise) return;
+        promise().then((data) => {
+            setState({
+                loading: false,
+                data
+            })
+        });
+    }, []);
+
+    if(state.loading) return <BusyOverlay/>;
+
+    return (
+        <>
+            {children(state.data)}
+        </>
+    );
+};

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 const css = require('./session.scss');
 
 
-export const Sessions = () => {
+const Sessions = () => {
   const [state, setState] = useState({loading: true});
 
   return (
@@ -12,3 +12,5 @@ export const Sessions = () => {
     </div>
   );
 }
+
+export default Sessions;

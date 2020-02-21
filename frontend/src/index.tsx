@@ -4,7 +4,7 @@ import {HashRouter as Router, Route, Switch} from "react-router-dom";
 import Games from "./views/games/games";
 import PlayersList from "./views/players/players";
 import {Shell} from "./views/shell/shell";
-import {Sessions} from "./views/session/session";
+import Sessions from "./views/session/session";
 
 const App = () => (
     <Router>

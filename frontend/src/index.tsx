@@ -11,7 +11,7 @@ const App = () => (
         <Shell>
             <Switch>
                 <Route exact path="/" component={LandingPage}/>
-                <Route exact path="/sessions" component={Sessions}/>
+                <Route path="/sessions" component={Sessions}/>
                 <Route path="/games" component={Games}/>
                 <Route path="/players" component={PlayersList}/>
             </Switch>

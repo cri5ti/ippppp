@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 
-const css = require('./tournament.scss');
+const css = require('./session.scss');
 
 
-export const Session = () => {
+export const Sessions = () => {
   const [state, setState] = useState({loading: true});
 
   return (

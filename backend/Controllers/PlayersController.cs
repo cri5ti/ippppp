@@ -39,8 +39,8 @@ namespace IP5.Controllers
 			_playerRepository.Add(player);
 		}
 
-		[HttpDelete]
-		public void Delete(string code)
+		[HttpDelete("{code}")]
+		public void Delete([FromRoute] string code)
 		{
 			_playerRepository.Delete(code);
 		}

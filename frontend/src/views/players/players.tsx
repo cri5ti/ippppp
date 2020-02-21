@@ -1,86 +1,64 @@
-import React, {useEffect, useState} from "react";
-import {cls} from "../../util/react";
+import React, {useCallback} from "react";
+import {Link, Route, Switch, useRouteMatch, withRouter} from "react-router-dom";
 import {List} from "../../ui/list/list";
+import {md5} from "../../util/md5";
+import {Page} from "../shell/shell";
+import {CreatePlayer} from "./create_player";
+import {PlayerDetails} from "./player_details";
+import {Player, playersApi} from "./players_api";
 
 const css = require('./players.scss');
 
-interface IPlayer {
-    description: string;
-    email: string
-}
-
-const Players = () => {
-    const [player, setGames] = useState({loading: true, players: []});
-
-    useEffect(() => {
-        async function load() {
-            const players = await (await fetch("/api/players")).json();
-            setGames({loading: false, players});
-        }
-
-        load();
-    }, []);
+const PlayersPage = () => {
+    const {path} = useRouteMatch();
 
     return (
-        <div className="players">
-            {player.loading && <div>Loading</div>}
-            <PlayerForm/>
-            <List<IPlayer> component={(player, key) => <Player key={key} {...player}/>}
-                           header={{email: "Email", description: "Name"}}
-                           data={player.players}/>
-        </div>
-    )
+        <Switch>
+            <Route path={`${path}/create`}>
+                <CreatePlayer/>
+            </Route>
+            <Route path={`${path}/:code`}>
+                <PlayerDetails/>
+            </Route>
+            <Route>
+                <PlayersList/>
+            </Route>
+        </Switch>
+    );
 };
 
 
-interface IPlayerFormState {
-    name: string,
-    email: string
-}
-
-function PlayerForm() {
-    const [form, setForm] = useState<IPlayerFormState>({} as any);
-
-    function onSubmit(e) {
-        e.preventDefault();
-        (async () => {
-            const players = await (await fetch("/api/players", {
-                method: "PUT",
-                body: JSON.stringify({Email: form.email, Description: form.name}),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })).json();
-            console.log(players);
-        })();
-
-
-        console.log(form)
-    }
+const PlayersList = withRouter(({history}) => {
+    const {url} = useRouteMatch();
+    const getAll = useCallback(() => playersApi.getAll(), []);
 
     return (
-        <form className={"form"} title={"New player"}>
-            <label htmlFor="name">Name:</label>
-            <input required={true} type={"text"} id="name" name={"name"} value={form.name} onChange={(e) => setForm({...form, name: e.target.value})}/>
-            <label htmlFor="email">Email:</label>
-            <input type={"email"} id="email" title={"Email"} value={form.email} onChange={(e) => setForm({...form, email: e.target.value})}/>
-            <button onClick={onSubmit}>Submit</button>
-        </form>
+        <Page title="Players">
+            <nav>
+                <Link to={`${url}/create`}>Create player</Link>
+            </nav>
+
+            <div className="players">
+                <List itemRender={player => <PlayerItem {...player}/>}
+                      data={getAll}
+                      onItemClick={(i) => history.push(url + '/' + i.code)}/>
+            </div>
+        </Page>
     )
-};
+});
 
 
-const Player = (props: IPlayer) => {
+const PlayerItem = (props: Player) => {
     const {description, email} = props;
 
     return (
-        <div className={cls("player")}>
-            <div>{description}</div>
-            <div>{email}</div>
+        <div className="player">
+            <Gravatar email={email} size={64}/>
+            <span className="name">{description}</span>
         </div>
     )
 };
 
+const Gravatar = ({email, size, ...rest}) => <img src={`https://secure.gravatar.com/avatar/${md5(email)}?size=${size}`} {...rest}/>
 
-export default Players;
+export default PlayersPage;

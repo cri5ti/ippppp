@@ -1,29 +1,22 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {cls} from "../../util/react";
+import {Page} from "../shell/shell";
+import {gamesApi} from "./games_api";
+import {List} from "../../ui/list/list";
 
 const css = require('./games.scss');
 
 const Games = () => {
-    const [game, setGames] = useState({loading: true, games: []});
-
-    useEffect(() => {
-        async function load() {
-            const games = await (await fetch("/api/games")).json();
-            setGames({ loading: false, games});
-        }
-        load();
-    }, []);
-
     return (
-        <div className="games">
-            {game.loading && <div>Loading</div>}
-            {game.games.map((i,ix) => <Game game={i} key={ix}/>)}
-        </div>
+        <Page title="Games">
+            <List data={gamesApi.getAll}
+                  className={"games"}
+                  itemRender={(i) => <GameItem game={i}/>}/>
+        </Page>
     )
-
 };
 
-const Game = ({game}) =>
+const GameItem = ({game}) =>
     <div className={cls("game", game.ongoing && 'ongoing')}>
         <div className="player a">{game.player1}</div>
         <div className="score a">{game.score1}</div>

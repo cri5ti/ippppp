@@ -1,4 +1,10 @@
-.list{
+ol.list {
   display: flex;
   flex-direction: column;
+
+  li {
+    &:hover {
+      background: #f796;
+    }
+  }
 }

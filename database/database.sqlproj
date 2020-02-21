@@ -64,4 +64,7 @@
   <ItemGroup>
     <Build Include="player.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="session.sql" />
+  </ItemGroup>
 </Project>

@@ -19,15 +19,6 @@ jest.mock('react-router-dom', () => ({
   useRouteMatch: () => ({url: '/players'}),
 }));
 
-
-describe("Testing players API", () => {
-  it('Get all players', async () => {
-    // FIXME: this is not really testing any thing, as we've mocked the api anyway.
-    const data = await playersApi.getAll();
-    expect(data).not.toBeFalsy();
-  });
-});
-
 let container;
 
 beforeEach(() => {

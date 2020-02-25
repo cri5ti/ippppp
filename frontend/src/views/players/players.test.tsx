@@ -3,7 +3,7 @@ import {render, unmountComponentAtNode} from "react-dom";
 import {act} from "react-dom/test-utils";
 import {BrowserRouter as Router} from 'react-router-dom';
 import PlayersPage from "./players";
-import {playersApi} from "./players_api";
+import {playersApi} from "../../api/players";
 
 jest.mock('./players_api', () => ({
   playersApi: {

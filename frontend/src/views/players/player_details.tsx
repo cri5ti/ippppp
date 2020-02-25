@@ -3,7 +3,7 @@ import {useHistory, useParams} from "react-router";
 import {BackLink, DefaultButton} from "../../ui/back_button";
 import {BusyRender} from "../../ui/busy/busy";
 import {Page} from "../shell/shell";
-import {Player, playersApi} from "./players_api";
+import {Player, playersApi} from "../../api/players";
 
 
 export const PlayerDetails = () => {

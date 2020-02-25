@@ -20,6 +20,12 @@ namespace IP5.Controllers
 			_sessionRepository = sessionRepository;
 		}
 
+		[HttpPut]
+		public void Create(Session session)
+		{
+			_sessionRepository.Add(session);
+		}
+
 		[HttpGet]
 		public async IAsyncEnumerable<Session> GetAll()
 		{

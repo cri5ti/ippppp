@@ -12,7 +12,7 @@ export const CreateSession = withRouter(({history}) => {
     const onSubmit = useCallback(async (ev) => {
         ev.preventDefault();
         setBusy(true);
-        await sessionApi.create(form);
+        await sessionApi.create({description: form.description, minGamesRequired: form.minGamesRequired});
         setBusy(false);
         history.replace('/sessions');
     }, [form]);

@@ -26,6 +26,7 @@ namespace IP5.Repositories
 
         public IAsyncEnumerable<Session> GetAll()
         {
+            //todo get include paths for session players
             return _db.Sessions
                 .Select(i => new Session
                 {

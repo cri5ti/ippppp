@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace IP5.Model
 {
 	public class Session
@@ -6,6 +8,7 @@ namespace IP5.Model
 		public string Description { get; set; }
 		public int MinGamesRequired { get; set; }
 		public bool IsActive { get; set; }
-		//public List<Player> Players { get; set; }
+
+		public List<SessionPlayer> SessionPlayers { get; set; }
 	}
 }

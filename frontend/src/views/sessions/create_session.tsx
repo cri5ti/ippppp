@@ -3,10 +3,10 @@ import {withRouter} from "react-router";
 import {BackLink, DefaultButton} from "../../ui/back_button";
 import {Page} from "../shell/shell";
 import {BusyOverlay} from "../../ui/busy/busy";
-import {Session, sessionApi} from "../../api/sessions";
+import {TSession, sessionApi} from "../../api/sessions";
 
 export const CreateSession = withRouter(({history}) => {
-    const [form, setForm] = useState<Partial<Session>>({});
+    const [form, setForm] = useState<Partial<TSession>>({});
     const [busy, setBusy] = useState(false);
 
     const onSubmit = useCallback(async (ev) => {

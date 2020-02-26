@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IP5.Extensions;
@@ -9,8 +10,7 @@ namespace IP5.Repositories
 {
     public interface ISessionPlayersRepository
     {
-        Task Add(SessionPlayer SessionPlayer);
-        IAsyncEnumerable<SessionPlayer> GetAll();
+        Task Add(List<SessionPlayer> SessionPlayer);
     }
 
     public class SessionPlayersRepository : ISessionPlayersRepository
@@ -22,24 +22,16 @@ namespace IP5.Repositories
             _db = db;
         }
 
-        public IAsyncEnumerable<SessionPlayer> GetAll()
+        public Task Add(List<SessionPlayer> SessionPlayer)
         {
-            return _db.SessionPlayers
-                .Select(i => new SessionPlayer
+            SessionPlayer.ForEach(i =>
+                _db.SessionPlayers.Add(new DbSessionPlayer
                 {
-                    SessionId = i.SessionId,
-                    PlayerId = i.PlayerId
+                    SessionId = i.SessionCode.ToGuid(),
+                    PlayerId = i.PlayerCode.ToGuid()
                 })
-                .AsAsyncEnumerable();
-        }
-
-        public Task Add(SessionPlayer SessionPlayer)
-        {
-            _db.SessionPlayers.Add(new DbSessionPlayer
-            {
-                SessionId = SessionPlayer.SessionId,
-                PlayerId = SessionPlayer.PlayerId
-            });
+            );
+            
             return _db.SaveChangesAsync();
         }
     }

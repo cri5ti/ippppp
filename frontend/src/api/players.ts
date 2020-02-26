@@ -1,7 +1,7 @@
 import {API_URL} from "../config";
 
 
-export type Player = {
+export type TPlayer = {
   code: string;
   description: string;
   email: string;
@@ -10,8 +10,8 @@ export type Player = {
 }
 
 export const playersApi = {
-  getAll: async (): Promise<Player[]> => await (await fetch(API_URL + "/players")).json(),
-  getOne: async (code: string): Promise<Player> => await (await fetch(`${API_URL}/players/${code}`)).json(),
+  getAll: async (): Promise<TPlayer[]> => await (await fetch(API_URL + "/players")).json(),
+  getOne: async (code: string): Promise<TPlayer> => await (await fetch(`${API_URL}/players/${code}`)).json(),
   create: async (body: any): Promise<Response> => await fetch(`${API_URL}/players`, {
     method: "PUT",
     body: JSON.stringify(body),

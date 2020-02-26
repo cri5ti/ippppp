@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IP5.Model;
 using IP5.Repositories;
@@ -12,18 +14,28 @@ namespace IP5.Controllers
 	public class SessionsController : ControllerBase
 	{
 		private readonly ISessionsRepository _sessionRepository;
+		private readonly ISessionPlayersRepository _sessionPlayersRepository;
 		private readonly ILogger<SessionsController> _logger;
 
-		public SessionsController(ISessionsRepository sessionRepository, ILogger<SessionsController> logger)
+		public SessionsController(ISessionsRepository sessionRepository, ISessionPlayersRepository sessionPlayersRepository, ILogger<SessionsController> logger)
 		{
 			_logger = logger;
 			_sessionRepository = sessionRepository;
+			_sessionPlayersRepository = sessionPlayersRepository;
 		}
 
+		//todo pass a list of players on session creation
 		[HttpPut]
 		public void Create(Session session)
 		{
 			_sessionRepository.Add(session);
+		}
+
+		//sessions/players
+		[HttpPut("players")]
+		public void AddPlayers([FromBody] SessionPlayer[] sessionPlayers)
+		{
+			_sessionPlayersRepository.Add(sessionPlayers.ToList());
 		}
 
 		[HttpGet]
@@ -38,6 +50,5 @@ namespace IP5.Controllers
 		{
 			return _sessionRepository.Get(code);
 		}
-
 	}
 }

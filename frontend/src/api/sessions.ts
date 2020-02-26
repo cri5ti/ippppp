@@ -1,6 +1,11 @@
 import {API_URL} from "../config";
 
-export type Session = {
+export type TSessionPlayers = {
+    sessionCode: string,
+    playerCode: string
+}
+
+export type TSession = {
     code: string,
     description: string,
     minGamesRequired: number,
@@ -9,9 +14,16 @@ export type Session = {
 }
 
 export const sessionApi = {
-    getAll: async (): Promise<Session[]> => await (await fetch(API_URL + "/sessions")).json(),
-    getOne: async (code: string): Promise<Session> => await (await fetch(`${API_URL}/sessions/${code}`)).json(),
-    create: async (body: Partial<Session>): Promise<Response> => await fetch(`${API_URL}/sessions`, {
+    getAll: async (): Promise<TSession[]> => await (await fetch(API_URL + "/sessions")).json(),
+    getOne: async (code: string): Promise<TSession> => await (await fetch(`${API_URL}/sessions/${code}`)).json(),
+    addPlayer: async (players: Array<TSessionPlayers>): Promise<Response> => await fetch(`${API_URL}/session/players`, {
+        method: "PUT",
+        body: JSON.stringify(players),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+    }}),
+    create: async (body: Partial<TSession>): Promise<Response> => await fetch(`${API_URL}/sessions`, {
         method: "PUT",
         body: JSON.stringify(body),
         headers: {

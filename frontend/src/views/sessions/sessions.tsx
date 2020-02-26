@@ -2,9 +2,8 @@ import React, {useCallback} from "react";
 import {Link, Route, Switch, useRouteMatch, withRouter} from "react-router-dom";
 import {Page} from "../shell/shell";
 import {List} from "../../ui/list/list";
-import {Session, sessionApi} from "../../api/sessions";
+import {TSession, sessionApi} from "../../api/sessions";
 import {CreateSession} from "./create_session";
-import {PlayerDetails} from "../players/player_details";
 import {SessionDetails} from "./session_details";
 
 const css = require('./sessions.scss');
@@ -28,7 +27,6 @@ const SessionsPage = () => {
     );
 };
 
-
 const SessionsList = withRouter(({history}) => {
     const {url} = useRouteMatch();
     const getAll = useCallback(() => sessionApi.getAll(), []);
@@ -49,7 +47,7 @@ const SessionsList = withRouter(({history}) => {
 });
 
 
-const SessionItem = (props: Session) => {
+const SessionItem = (props: TSession) => {
     const {description, minGamesRequired, isActive} = props;
 
     return (

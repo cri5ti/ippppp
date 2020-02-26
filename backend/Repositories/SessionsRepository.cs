@@ -33,7 +33,14 @@ namespace IP5.Repositories
                     Code = i.Id.ToBase64(),
                     Description = i.Description,
                     MinGamesRequired = i.MinGamesRequired,
-                    IsActive = i.IsActive
+                    IsActive = i.IsActive,
+                    SessionPlayers = i.SessionPlayers.Select(j => new SessionPlayer { 
+                        Player = new Player
+                        {
+                            Code = j.Player.Id.ToBase64(),
+                            Description = j.Player.Name
+                        }
+                    }).ToList()
                 })
                 .AsAsyncEnumerable();
         }

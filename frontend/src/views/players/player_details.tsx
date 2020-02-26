@@ -3,7 +3,7 @@ import {useHistory, useParams} from "react-router";
 import {BackLink, DefaultButton} from "../../ui/back_button";
 import {BusyRender} from "../../ui/busy/busy";
 import {Page} from "../shell/shell";
-import {Player, playersApi} from "../../api/players";
+import {TPlayer, playersApi} from "../../api/players";
 
 
 export const PlayerDetails = () => {
@@ -19,7 +19,7 @@ export const PlayerDetails = () => {
     }
 
     return (
-        <BusyRender<Player> promise={getOne}>
+        <BusyRender<TPlayer> promise={getOne}>
             {(player) => (
                 <Page title={player.description}>
                     <nav>

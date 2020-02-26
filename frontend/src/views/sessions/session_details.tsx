@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import {BackLink, DefaultButton} from "../../ui/back_button";
 import {BusyRender} from "../../ui/busy/busy";
@@ -16,8 +16,15 @@ export const SessionDetails = () => {
     const history = useHistory();
 
     const getOne = useCallback(() => sessionApi.getOne(code), [code]);
-
     const getAllPlayers = useCallback(() => playersApi.getAll(),[]);
+
+    useEffect(() => {
+        (async () => {
+            const session = await sessionApi.getOne(code);
+            const players: Array<TPlayer> = session.sessionPlayers.map(i => i.player);
+            setState({...state, selectedPlayers: new Set(players)});
+        })();
+    }, []);
 
     async function onDelete() {
         const res = await sessionApi.remove(code);
@@ -26,7 +33,7 @@ export const SessionDetails = () => {
     }
 
     async function onSave(){
-        const sessionPlayers: Array<TSessionPlayers> = Array.from(selectedPlayers).map(i => ({playerCode: i.code, sessionCode: i.code}));
+        const sessionPlayers: Array<TSessionPlayers> = Array.from(selectedPlayers).map(i => ({playerCode: i.code, sessionCode: code}));
         await sessionApi.addPlayer(sessionPlayers);
     }
 
@@ -34,6 +41,8 @@ export const SessionDetails = () => {
         selectedPlayers.has(item) ? selectedPlayers.delete(item) : selectedPlayers.add(item);
         setState({...state, selectedPlayers: new Set([...selectedPlayers])})
     }
+
+    const selectedPlayerCodes = Array.from(selectedPlayers).map(i => i.code);
 
     return (
         <BusyRender<TSession> promise={getOne}>
@@ -51,7 +60,7 @@ export const SessionDetails = () => {
                     </div>
                     <List<TPlayer> data={getAllPlayers} itemRender={(i) => (
                         <label htmlFor={i.code}>
-                            <input type={"checkbox"} checked={selectedPlayers.has(i)} id={i.code} name={i.code}/>
+                            <input type={"checkbox"} checked={selectedPlayerCodes.includes(i.code)} id={i.code} name={i.code}/>
                             {i.description}
                         </label>
                     )} onItemClick={onItemClick}/>

@@ -24,13 +24,11 @@ namespace IP5.Repositories
 
         public Task Add(List<SessionPlayer> SessionPlayer)
         {
-            SessionPlayer.ForEach(i =>
-                _db.SessionPlayers.Add(new DbSessionPlayer
-                {
-                    SessionId = i.SessionCode.ToGuid(),
-                    PlayerId = i.PlayerCode.ToGuid()
-                })
-            );
+            _db.SessionPlayers.AddRange(SessionPlayer.Select(i => new DbSessionPlayer
+            {
+                SessionId = i.SessionCode.ToGuid(),
+                PlayerId = i.PlayerCode.ToGuid()
+            }).ToList());
             
             return _db.SaveChangesAsync();
         }

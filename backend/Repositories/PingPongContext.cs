@@ -23,7 +23,6 @@ namespace IP5.Repositories
                 .ToTable("session");
 
             modelBuilder.Entity<DbSessionPlayer>().HasOne<DbSession>(x => x.Session).WithMany(x => x.SessionPlayers).HasForeignKey(x => x.SessionId);
-            modelBuilder.Entity<DbSessionPlayer>().HasOne<DbPlayer>(x => x.Player).WithMany(x => x.SessionPlayers).HasForeignKey(x => x.PlayerId);
         }
     }
 

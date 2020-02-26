@@ -1,8 +1,11 @@
 import {API_URL} from "../config";
+import {TPlayer} from "./players";
 
 export type TSessionPlayers = {
     sessionCode: string,
-    playerCode: string
+    playerCode: string,
+    player?: TPlayer,
+    session?: TSession //todo this property is not returning anything from the api
 }
 
 export type TSession = {
@@ -10,13 +13,13 @@ export type TSession = {
     description: string,
     minGamesRequired: number,
     isActive: boolean,
-    sessionPlayers: Array<any> //todo sessionPlayer
+    sessionPlayers: Array<TSessionPlayers>
 }
 
 export const sessionApi = {
     getAll: async (): Promise<TSession[]> => await (await fetch(API_URL + "/sessions")).json(),
     getOne: async (code: string): Promise<TSession> => await (await fetch(`${API_URL}/sessions/${code}`)).json(),
-    addPlayer: async (players: Array<TSessionPlayers>): Promise<Response> => await fetch(`${API_URL}/session/players`, {
+    addPlayer: async (players: Array<TSessionPlayers>): Promise<Response> => await fetch(`${API_URL}/sessions/players`, {
         method: "PUT",
         body: JSON.stringify(players),
         headers: {

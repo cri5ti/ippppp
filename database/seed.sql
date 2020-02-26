@@ -4,3 +4,6 @@
 ('Jimmy', 'jimmy@example.com'),
 ('Jake', 'jake@example.com'),
 ('Joe', 'joe@example.com')
+
+insert into session(description) values
+('Great session')

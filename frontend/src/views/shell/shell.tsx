@@ -10,6 +10,7 @@ export const Shell = ({children}) => (
             <nav>
                 <NavLink to={"/games"}>Games</NavLink>
                 <NavLink to={"/players"}>Players</NavLink>
+                <NavLink to={"/sessions"}>Sessions</NavLink>
             </nav>
         </header>
         <main>

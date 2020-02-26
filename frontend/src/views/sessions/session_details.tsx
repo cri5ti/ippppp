@@ -3,23 +3,23 @@ import {useHistory, useParams} from "react-router";
 import {BackLink, DefaultButton} from "../../ui/back_button";
 import {BusyRender} from "../../ui/busy/busy";
 import {Page} from "../shell/shell";
-import {Player, playersApi} from "../../api/players";
+import {Session, sessionApi} from "../../api/sessions";
 
 
-export const PlayerDetails = () => {
+export const SessionDetails = () => {
     const {code} = useParams();
     const history = useHistory();
 
-    const getOne = useCallback(() => playersApi.getOne(code), [code]);
+    const getOne = useCallback(() => sessionApi.getOne(code), [code]);
 
     async function onDelete() {
-        const res = await playersApi.remove(code);
+        const res = await sessionApi.remove(code);
         if(!res) return;
         history.goBack();
     }
 
     return (
-        <BusyRender<Player> promise={getOne}>
+        <BusyRender<Session> promise={getOne}>
             {(player) => (
                 <Page title={player.description}>
                     <nav>

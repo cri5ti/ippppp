@@ -1,20 +1,43 @@
 # ippppp
 [Iplicit Ping Pong Personal Project](https://storageaccountip5b68a.z33.web.core.windows.net/)
 
-# Accepting PRs! 👍
+
+## Dev
 
 
-## Goals
- * learn / practice new skills (go full stack)
- * try out frameworks / libraries / ideas on a small project
- * play ping pong
+## Database setup
+
+The `P5` connection string should be set in your user secrets file.
+
+```
+{
+  "ConnectionStrings": {
+    "P5": "Server=sqlserver; Database=####; Integrated Security=true;"
+  }
+}
+```
 
 
-## How to
- * check open issues & raise new issues
- * branch out
- * submit PRs (pushing to master is disabled 🙈 to encourage PRs & reviews!)
- * review other PRs / ask questions / review !
+## Install .NET CLI EF Tools
+
+```
+dotnet tool install --global dotnet-ef
+```
+
+
+## Apply migrations
+
+* Update database to latest:
+
+  ```
+  dotnet database update
+  ```
+
+
+* Use `dotnet ef migrations add` to create a new migration.
+
+  Read more:
+   * https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/
 
 
 ## Links

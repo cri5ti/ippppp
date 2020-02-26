@@ -7,8 +7,6 @@ namespace IP5.Repositories
 {
   public class DbSessionPlayer
   {
-        //fixme this table doesn't contain any primary key
-        [Key]
         [Column("session_id")]
         public Guid SessionId { get; set; }
 

@@ -17,7 +17,7 @@ namespace IP5.Repositories
               .ToTable("player");
 
             modelBuilder.Entity<DbSessionPlayer>()
-              .ToTable("session_player");
+              .ToTable("session_player").HasKey(o => new {o.SessionId, o.PlayerId});
 
             modelBuilder.Entity<DbSession>()
                 .ToTable("session");

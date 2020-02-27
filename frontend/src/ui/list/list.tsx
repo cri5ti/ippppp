@@ -1,4 +1,4 @@
-import React, {ReactElement} from "react";
+import React, {ReactElement, ReactNode} from "react";
 import {cls} from "../../util/react";
 import {BusyRender} from "../busy/busy";
 
@@ -6,7 +6,7 @@ const css = require('./list.scss');
 
 interface IListProps<T> {
     data: Array<T> | (() => Promise<Array<T>>);
-    itemRender: (item: T) => ReactElement;
+    itemRender: (item: T) => ReactNode;
     onItemClick?: (item: T) => void;
     className?: string;
 }

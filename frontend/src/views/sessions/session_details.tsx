@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {ReactElement, ReactNode, useCallback, useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router";
 import {BackLink, DefaultButton} from "../../ui/back_button";
 import {BusyRender} from "../../ui/busy/busy";
@@ -6,23 +6,27 @@ import {Page} from "../shell/shell";
 import {sessionApi, TSession, TSessionPlayers} from "../../api/sessions";
 import {playersApi, TPlayer} from "../../api/players";
 import {List} from "../../ui/list/list";
+import {cls} from "../../util/react";
+import {MultiSelect} from "../../ui/multi_select/multi_select";
 
+const css = require('./sessions.scss');
 
 export const SessionDetails = () => {
     const {code} = useParams();
-    const [state, setState] = useState<{players: Array<TPlayer>, selectedPlayers: Set<TPlayer>}>({players: [], selectedPlayers: new Set([])});
-    const {players, selectedPlayers} = state;
+    const [state, setState] = useState<{players: Array<TPlayer>, selectedPlayers: Set<TPlayer>, sessionPlayers: Array<TPlayer>}>({players: [], selectedPlayers: new Set([]), sessionPlayers: []});
+    const {players, selectedPlayers, sessionPlayers} = state;
 
     const history = useHistory();
 
     const getOne = useCallback(() => sessionApi.getOne(code), [code]);
-    const getAllPlayers = useCallback(() => playersApi.getAll(),[]);
 
     useEffect(() => {
         (async () => {
             const session = await sessionApi.getOne(code);
-            const players: Array<TPlayer> = session.sessionPlayers.map(i => i.player);
-            setState({...state, selectedPlayers: new Set(players)});
+            const players = await playersApi.getAll();
+
+            const sessionPlayers: Array<TPlayer> = session.sessionPlayers.map(i => i.player);
+            setState({...state, sessionPlayers, players});
         })();
     }, []);
 
@@ -42,7 +46,17 @@ export const SessionDetails = () => {
         setState({...state, selectedPlayers: new Set([...selectedPlayers])})
     }
 
-    const selectedPlayerCodes = Array.from(selectedPlayers).map(i => i.code);
+    // const renderMultiSelectItem = (item, selectedItems) => {
+    //     const isSelected =
+    //
+    //     return (
+    //         <label htmlFor={item.code}
+    //                className={cls(selectedItems.has(item.code) && css.selected)}>
+    //             <input type="checkbox" name={item.code} id={item.code} che/>
+    //             {item.description}
+    //         </label>
+    //     )
+    // };
 
     return (
         <BusyRender<TSession> promise={getOne}>
@@ -53,19 +67,16 @@ export const SessionDetails = () => {
                         <DefaultButton onClick={onDelete}>Delete</DefaultButton>
                         <DefaultButton onClick={onSave}>Save</DefaultButton>
                     </nav>
-
                     <div>
                         {player.code}
                         <p>Details go here</p>
                     </div>
-                    <List<TPlayer> data={getAllPlayers} itemRender={(i) => (
-                        <label htmlFor={i.code}>
-                            <input type={"checkbox"} checked={selectedPlayerCodes.includes(i.code)} id={i.code} name={i.code}/>
-                            {i.description}
-                        </label>
-                    )} onItemClick={onItemClick}/>
+                    <MultiSelect<TPlayer> allItems={players}
+                                          initialSelection={sessionPlayers}
+                                          itemRender={(item => item.description)}/>
                 </Page>
             )}
         </BusyRender>
     )
 };
+

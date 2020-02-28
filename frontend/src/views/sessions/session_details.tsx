@@ -49,7 +49,7 @@ export const SessionDetails = () => {
         await Promise.all([addedSessionPlayers.length && sessionApi.addPlayers(addedSessionPlayers), removedSessionPlayers.length && sessionApi.deletePlayers(removedSessionPlayers)]);
     }
 
-    const onChange = (result) => {
+    const onChangePlayers = (result) => {
         setState({...state, selectedPlayers: result})
     };
 
@@ -68,7 +68,7 @@ export const SessionDetails = () => {
                     </div>
                     <MultiSelect<TPlayer> allItems={players}
                                           initialSelection={sessionPlayers}
-                                          onChange={onChange}
+                                          onChange={onChangePlayers}
                                           itemRender={(item => item.description)}/>
                 </Page>
             )}

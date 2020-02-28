@@ -8,38 +8,45 @@ interface IMultiSelectProps<T> {
     allItems: Array<T>;
     initialSelection: Array<T>;
     itemRender: (item: T) => ReactNode;
+    onChange: (result: {added:Array<T>; removed: Array<T>}) => void;
 }
 
 interface IMultiSelectState<T> {
-    itemsSelected: Set<T>;
-    itemsAvailable: Set<T>;
-    tempSelected: Set<T>;
-    tempAvailable: Set<T>;
+    itemsSelected: Array<T>;
+    itemsAvailable: Array<T>;
+    tempSelectedCodes: Array<string>;
+    tempAvailableCodes: Array<string>;
 }
 
 export function MultiSelect<T extends {code: string}>(props: IMultiSelectProps<T>){
-    const {allItems, initialSelection, itemRender} = props;
+    const {allItems, initialSelection, itemRender, onChange} = props;
     const sItemsCodes = initialSelection.map(i => i.code);
     const aItems = allItems.filter(i => !sItemsCodes.includes(i.code));
-    const [state, setState] = useState<IMultiSelectState<T>>({itemsAvailable: new Set([]), itemsSelected: new Set([]), tempAvailable: new Set([]), tempSelected: new Set([])});
+    const [state, setState] = useState<IMultiSelectState<T>>();
 
-    const {itemsSelected, itemsAvailable, tempSelected, tempAvailable} = state;
+    const {itemsSelected, itemsAvailable, tempSelectedCodes, tempAvailableCodes} = state || {};
 
     useEffect(() => {
         setState({
-            itemsAvailable: new Set(aItems),
-            itemsSelected: new Set(initialSelection),
-            tempAvailable: new Set([]),
-            tempSelected: new Set([])
+            itemsAvailable: aItems,
+            itemsSelected: initialSelection,
+            tempAvailableCodes: [],
+            tempSelectedCodes: []
         })
     }, [allItems, initialSelection]);
 
-    const onItemClick = (item: T, set: Set<T>) => {
-        set.has(item) ?  set.delete(item) : set.add(item)
+    const onItemClick = (item: T, stateProperty: string) => {
+        const data: Array<string> = [...state[stateProperty]];
+        const index = data.indexOf(item.code);
+
+        index === -1 ? data.push(item.code) : data.splice(index, 1);
+
+        setState({...state, [stateProperty]: data})
     };
 
-    const _itemRender = (item: T) => {
-        const isSelected = itemsSelected.has(item);
+    const onItemRender = (item: T, stateProperty: string) => {
+        const data: Array<string> = state[stateProperty];
+        const isSelected = data.includes(item.code);
 
         return (
             <label htmlFor={item.code}
@@ -50,44 +57,65 @@ export function MultiSelect<T extends {code: string}>(props: IMultiSelectProps<T
         )
     };
 
-    const onAddItems = () => {
-        const _itemsAvailable = new Set([...itemsAvailable].filter(i => tempAvailable.has(i)));
-        const _itemsSelected = new Set([...itemsSelected, ...tempAvailable]);
-        setState({...state, itemsSelected: _itemsSelected, itemsAvailable: _itemsAvailable})
+    //todo remove duplication :(
+
+    const onAdd = () => {
+        const _itemsAvailable = [...itemsAvailable].filter(i => !tempAvailableCodes.includes(i.code));
+        const _itemsSelected = [...itemsSelected, ...tempAvailableCodes.map(i => allItems.find(j => j.code === i))];
+        const _tempSelectedCodes = [...tempAvailableCodes];
+
+        _onChange(_itemsSelected);
+        setState({itemsSelected: _itemsSelected, itemsAvailable: _itemsAvailable, tempSelectedCodes: _tempSelectedCodes, tempAvailableCodes: []})
     };
 
     const onAddAll = () => {
-        const _itemsAvailable = new Set([]);
-        const _itemsSelected = new Set([...allItems]);
-        setState({...state, itemsSelected: _itemsSelected, itemsAvailable: _itemsAvailable})
+        const _itemsAvailable = [];
+        const _itemsSelected = [...allItems];
+        const _tempSelectedCodes = [...tempAvailableCodes];
+
+        _onChange(_itemsSelected);
+        setState({itemsSelected: _itemsSelected, itemsAvailable: _itemsAvailable, tempSelectedCodes: _tempSelectedCodes, tempAvailableCodes: []})
     };
 
     const onRemoveAll = () => {
-        const _itemsAvailable = new Set([...allItems]);
-        const _itemsSelected = new Set([]);
-        setState({...state, itemsSelected: _itemsSelected, itemsAvailable: _itemsAvailable})
+        const _itemsSelected = [];
+        const _itemsAvailable = [...allItems];
+        const _tempAvailableCodes = [...tempSelectedCodes];
+
+        _onChange(_itemsSelected);
+        setState({...state, itemsSelected: _itemsSelected, itemsAvailable: _itemsAvailable, tempAvailableCodes: _tempAvailableCodes, tempSelectedCodes: []})
     };
 
-    const onRemoveItems = () => {
-        const _itemsSelected = new Set([...itemsSelected].filter(i => tempSelected.has(i)));
-        const _itemsAvailable = new Set([...itemsAvailable, ...tempSelected]);
-        setState({...state, itemsAvailable: _itemsAvailable, itemsSelected: _itemsSelected})
+    const onRemove = () => {
+        const _itemsSelected = [...itemsSelected].filter(i => !tempSelectedCodes.includes(i.code));
+        const _itemsAvailable = [...itemsAvailable, ...tempSelectedCodes.map(i => allItems.find(j => j.code === i))];
+        const _tempAvailableCodes = [...tempSelectedCodes];
+
+        _onChange(_itemsSelected);
+        setState({itemsSelected: _itemsSelected, itemsAvailable: _itemsAvailable, tempAvailableCodes: _tempAvailableCodes, tempSelectedCodes: []})
+    };
+
+    const _onChange = (itemsSelected: Array<T>) => {
+        const added = itemsSelected.filter(i => !initialSelection.some(j => j.code === i.code));
+        const removed = initialSelection.filter(i => !itemsSelected.some(j => j.code === i.code));
+
+        onChange({added, removed})
     };
 
     return (
         <div className={"multi-select"}>
-            <List<T> data={Array.from(itemsAvailable)}
-                     itemRender={_itemRender}
-                     onItemClick={(item) => onItemClick(item, tempAvailable)}/>
-            <div>
-                <button onClick={onAddItems}>Add</button>
+            <List<T> data={itemsAvailable || []}
+                     itemRender={(item) => onItemRender(item, "tempAvailableCodes")}
+                     onItemClick={(item) => onItemClick(item, "tempAvailableCodes")}/>
+            <div className={"controls"}>
+                <button onClick={onAdd}>Add</button>
                 <button onClick={onAddAll}>Add all</button>
                 <button onClick={onRemoveAll}>Remove all</button>
-                <button onClick={onRemoveItems}>Remove</button>
+                <button onClick={onRemove}>Remove</button>
             </div>
-            <List<T> data={Array.from(itemsSelected)}
-                     itemRender={_itemRender}
-                     onItemClick={(item) => onItemClick(item, tempSelected)}/>
+            <List<T> data={itemsSelected || []}
+                     itemRender={(item) => onItemRender(item, "tempSelectedCodes")}
+                     onItemClick={(item) => onItemClick(item, "tempSelectedCodes")}/>
         </div>
     );
 }

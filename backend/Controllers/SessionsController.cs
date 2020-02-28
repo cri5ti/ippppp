@@ -38,6 +38,13 @@ namespace IP5.Controllers
 			_sessionPlayersRepository.Add(sessionPlayers.ToList());
 		}
 
+		//sessions/players
+		[HttpDelete("players")]
+		public void DeletePlayers([FromBody] SessionPlayer[] sessionPlayers)
+		{
+			_sessionPlayersRepository.Delete(sessionPlayers.ToList());
+		}
+
 		[HttpGet]
 		public async IAsyncEnumerable<Session> GetAll()
 		{

@@ -68,7 +68,7 @@ export const SessionDetails = () => {
                     </div>
                     <MultiSelect<TPlayer> allItems={players}
                                           initialSelection={sessionPlayers}
-                                          onChange={(result) => onChange(result)}
+                                          onChange={onChange}
                                           itemRender={(item => item.description)}/>
                 </Page>
             )}

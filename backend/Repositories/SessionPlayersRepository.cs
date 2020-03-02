@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IP5.Extensions;
@@ -9,8 +10,8 @@ namespace IP5.Repositories
 {
     public interface ISessionPlayersRepository
     {
-        Task Add(SessionPlayer SessionPlayer);
-        IAsyncEnumerable<SessionPlayer> GetAll();
+        Task Add(List<SessionPlayer> sessionPlayers);
+        Task Delete(List<SessionPlayer> sessionPlayers);
     }
 
     public class SessionPlayersRepository : ISessionPlayersRepository
@@ -22,24 +23,25 @@ namespace IP5.Repositories
             _db = db;
         }
 
-        public IAsyncEnumerable<SessionPlayer> GetAll()
+        public Task Add(List<SessionPlayer> sessionPlayers)
         {
-            return _db.SessionPlayers
-                .Select(i => new SessionPlayer
-                {
-                    SessionId = i.SessionId,
-                    PlayerId = i.PlayerId
-                })
-                .AsAsyncEnumerable();
+            _db.SessionPlayers.AddRange(sessionPlayers.Select(i => new DbSessionPlayer
+            {
+                SessionId = i.SessionCode.ToGuid(),
+                PlayerId = i.PlayerCode.ToGuid()
+            }));
+            
+            return _db.SaveChangesAsync();
         }
 
-        public Task Add(SessionPlayer SessionPlayer)
+        public Task Delete(List<SessionPlayer> sessionPlayers)
         {
-            _db.SessionPlayers.Add(new DbSessionPlayer
+            _db.SessionPlayers.RemoveRange(sessionPlayers.Select(i => new DbSessionPlayer
             {
-                SessionId = SessionPlayer.SessionId,
-                PlayerId = SessionPlayer.PlayerId
-            });
+                SessionId = i.SessionCode.ToGuid(),
+                PlayerId = i.PlayerCode.ToGuid()
+            }));
+
             return _db.SaveChangesAsync();
         }
     }

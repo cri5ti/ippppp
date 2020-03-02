@@ -1,0 +1,12 @@
+.multi-select {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  height: 500px;
+  align-items: center;
+
+  .controls{
+    display: flex;
+    flex-direction: column;
+  }
+}

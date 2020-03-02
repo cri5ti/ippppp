@@ -17,13 +17,12 @@ namespace IP5.Repositories
               .ToTable("player");
 
             modelBuilder.Entity<DbSessionPlayer>()
-              .ToTable("session_player");
+              .ToTable("session_player").HasKey(o => new {o.SessionId, o.PlayerId});
 
             modelBuilder.Entity<DbSession>()
                 .ToTable("session");
 
             modelBuilder.Entity<DbSessionPlayer>().HasOne<DbSession>(x => x.Session).WithMany(x => x.SessionPlayers).HasForeignKey(x => x.SessionId);
-            modelBuilder.Entity<DbSessionPlayer>().HasOne<DbPlayer>(x => x.Player).WithMany(x => x.SessionPlayers).HasForeignKey(x => x.PlayerId);
         }
     }
 

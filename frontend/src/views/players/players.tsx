@@ -5,7 +5,7 @@ import {md5} from "../../util/md5";
 import {Page} from "../shell/shell";
 import {CreatePlayer} from "./create_player";
 import {PlayerDetails} from "./player_details";
-import {TPlayer, playersApi} from "../../api/players";
+import {Player, playersApi} from "../../api/players";
 
 const css = require('./players.scss');
 
@@ -48,7 +48,7 @@ const PlayersList = withRouter(({history}) => {
 });
 
 
-const PlayerItem = (props: TPlayer) => {
+const PlayerItem = (props: Player) => {
     const {description, email} = props;
 
     return (

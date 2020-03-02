@@ -1,10 +1,10 @@
 import {API_URL} from "../config";
-import {TPlayer} from "./players";
+import {Player} from "./players";
 
 export type TSessionPlayers = {
     sessionCode: string,
     playerCode: string,
-    player?: TPlayer,
+    player?: Player,
     session?: TSession //todo this property is not returning anything from the api
 }
 

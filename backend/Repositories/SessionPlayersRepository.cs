@@ -10,8 +10,8 @@ namespace IP5.Repositories
 {
     public interface ISessionPlayersRepository
     {
-        Task Add(List<SessionPlayer> SessionPlayer);
-        Task Delete(List<SessionPlayer> SessionPlayer);
+        Task Add(List<SessionPlayer> sessionPlayers);
+        Task Delete(List<SessionPlayer> sessionPlayers);
     }
 
     public class SessionPlayersRepository : ISessionPlayersRepository
@@ -23,24 +23,24 @@ namespace IP5.Repositories
             _db = db;
         }
 
-        public Task Add(List<SessionPlayer> SessionPlayer)
+        public Task Add(List<SessionPlayer> sessionPlayers)
         {
-            _db.SessionPlayers.AddRange(SessionPlayer.Select(i => new DbSessionPlayer
+            _db.SessionPlayers.AddRange(sessionPlayers.Select(i => new DbSessionPlayer
             {
                 SessionId = i.SessionCode.ToGuid(),
                 PlayerId = i.PlayerCode.ToGuid()
-            }).ToList());
+            }));
             
             return _db.SaveChangesAsync();
         }
 
-        public Task Delete(List<SessionPlayer> SessionPlayer)
+        public Task Delete(List<SessionPlayer> sessionPlayers)
         {
-            _db.SessionPlayers.RemoveRange(SessionPlayer.Select(i => new DbSessionPlayer
+            _db.SessionPlayers.RemoveRange(sessionPlayers.Select(i => new DbSessionPlayer
             {
                 SessionId = i.SessionCode.ToGuid(),
                 PlayerId = i.PlayerCode.ToGuid()
-            }).ToList());
+            }));
 
             return _db.SaveChangesAsync();
         }

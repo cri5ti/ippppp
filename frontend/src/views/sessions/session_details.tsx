@@ -4,7 +4,7 @@ import {BackLink, DefaultButton} from "../../ui/back_button";
 import {BusyRender} from "../../ui/busy/busy";
 import {Page} from "../shell/shell";
 import {sessionApi, TSession, TSessionPlayers} from "../../api/sessions";
-import {playersApi, TPlayer} from "../../api/players";
+import {playersApi, Player} from "../../api/players";
 import {MultiSelect} from "../../ui/multi_select/multi_select";
 import set = Reflect.set;
 
@@ -12,9 +12,9 @@ const css = require('./sessions.scss');
 
 
 interface ISessionDetailsState {
-    players: Array<TPlayer>;
-    selectedPlayers?: {added: Array<TPlayer>, removed: Array<TPlayer>};
-    sessionPlayers: Array<TPlayer>
+    players: Array<Player>;
+    selectedPlayers?: {added: Array<Player>, removed: Array<Player>};
+    sessionPlayers: Array<Player>
 }
 
 export const SessionDetails = () => {
@@ -31,7 +31,7 @@ export const SessionDetails = () => {
             const session = await sessionApi.getOne(code);
             const players = await playersApi.getAll();
 
-            const sessionPlayers: Array<TPlayer> = session.sessionPlayers.map(i => i.player);
+            const sessionPlayers: Array<Player> = session.sessionPlayers.map(i => i.player);
             setState({...state, sessionPlayers, players});
         })();
     }, []);
@@ -66,10 +66,10 @@ export const SessionDetails = () => {
                         {player.code}
                         <p>Details go here</p>
                     </div>
-                    <MultiSelect<TPlayer> allItems={players}
-                                          initialSelection={sessionPlayers}
-                                          onChange={onChangePlayers}
-                                          itemRender={(item => item.description)}/>
+                    <MultiSelect<Player> allItems={players}
+                                         initialSelection={sessionPlayers}
+                                         onChange={onChangePlayers}
+                                         itemRender={(item => item.description)}/>
                 </Page>
             )}
         </BusyRender>

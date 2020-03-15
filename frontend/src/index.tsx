@@ -1,10 +1,10 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {HashRouter as Router, Route, Switch} from "react-router-dom";
-import Games from "./views/games/games";
 import PlayersList from "./views/players/players";
 import {Shell} from "./views/shell/shell";
 import Sessions from "./views/sessions/sessions";
+import GamesPage from "./views/games/games";
 
 const App = () => (
     <Router>
@@ -12,7 +12,7 @@ const App = () => (
             <Switch>
                 <Route exact path="/" component={LandingPage}/>
                 <Route path="/sessions" component={Sessions}/>
-                <Route path="/games" component={Games}/>
+                <Route path="/games" component={GamesPage}/>
                 <Route path="/players" component={PlayersList}/>
             </Switch>
         </Shell>

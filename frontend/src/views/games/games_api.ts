@@ -2,11 +2,12 @@ import {API_URL} from "../../config";
 
 
 export type Game = {
-    // code: string;
-    // description: string;
-    // email: string;
-    // wins: number;
-    // losses: number;
+    code: string,
+    playerOneCode: string,
+    playerTwoCode: string,
+    scoreOne: number,
+    scoreTwo: number,
+    isActive: boolean
 }
 
 export const gamesApi = {

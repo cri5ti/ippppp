@@ -34,6 +34,7 @@ namespace IP5
 			services.AddTransient<IPlayersRepository, PlayersRepository>();
 			services.AddTransient<ISessionPlayersRepository, SessionPlayersRepository>();
 			services.AddTransient<ISessionsRepository, SessionsRepository>();
+			services.AddTransient<IGamesRepository, GamesRepository>();
 
 			services.AddControllers();
 		}

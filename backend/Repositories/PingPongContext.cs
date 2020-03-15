@@ -7,6 +7,7 @@ namespace IP5.Repositories
     public DbSet<DbPlayer> Players { get; set; }
     public DbSet<DbSession> Sessions { get; set; }
     public DbSet<DbSessionPlayer> SessionPlayers { get; set; }
+    public DbSet<DbGame> Games { get; set; }
 
         public PingPongContext(DbContextOptions<PingPongContext> options) : base(options)
     { }
@@ -21,6 +22,9 @@ namespace IP5.Repositories
 
             modelBuilder.Entity<DbSession>()
                 .ToTable("session");
+
+            modelBuilder.Entity<DbGame>()
+                .ToTable("game");
 
             modelBuilder.Entity<DbSessionPlayer>().HasOne<DbSession>(x => x.Session).WithMany(x => x.SessionPlayers).HasForeignKey(x => x.SessionId);
         }

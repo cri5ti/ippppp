@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using IP5.Model;
+using IP5.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -10,21 +12,37 @@ namespace IP5.Controllers
 	public class GamesController : ControllerBase
 	{
 		private readonly ILogger<GamesController> _logger;
+		private readonly IGamesRepository _gamesRepository;	
 
-		public GamesController(ILogger<GamesController> logger)
+		public GamesController(IGamesRepository gamesRepository, ILogger<GamesController> logger)
 		{
 			_logger = logger;
+			_gamesRepository = gamesRepository;
 		}
 
 		[HttpGet]
-		public IEnumerable<Game> Get()
+		public async IAsyncEnumerable<Game> GetAll()
 		{
-			return new[] {
-				new Game {Player1 = "Joel", Player2 = "Rohn", Score1 = 3, Score2 = 6, Ongoing = true},
-				new Game {Player1 = "Jan", Player2 = "Bram", Score1 = 5, Score2 = 11},
-				new Game {Player1 = "Andy", Player2 = "Raul", Score1 = 11, Score2 = 9},
-				new Game {Player1 = "Danny", Player2 = "Tony", Score1 = 11, Score2 = 9},
-			};
+			await foreach (var game in _gamesRepository.GetAll())
+				yield return game;
+		}
+
+		[HttpGet("{code}")]
+		public Task<Game> Get([FromRoute] string code)
+		{
+			return _gamesRepository.Get(code);
+		}
+
+		[HttpPut]
+		public void Create(Game game)
+		{
+			_gamesRepository.Add(game);
+		}
+
+		[HttpDelete("{code}")]
+		public void Delete(string code)
+		{
+			_gamesRepository.Delete(code);
 		}
 	}
 }

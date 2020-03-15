@@ -2,10 +2,11 @@ namespace IP5.Model
 {
 	public class Game
 	{
-		public string Player1 { get; set; }
-		public string Player2 { get; set; }
-		public int Score1 { get; set; }
-		public int Score2 { get; set; }
-		public bool Ongoing { get; set; }
+		public string Code { get; set; }
+		public string PlayerOneCode { get; set; }
+		public string PlayerTwoCode { get; set; }
+		public int ScoreOne { get; set; }
+		public int ScoreTwo { get; set; }
+		public bool IsActive { get; set; }
 	}
 }

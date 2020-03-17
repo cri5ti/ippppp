@@ -28,10 +28,8 @@ namespace IP5.Repositories
         public Task Add(Game game)
         {
             _db.Games.Add(new DbGame {
-                Id = game.Code.ToGuid(),
-                IsActive = game.IsActive,
                 PlayerOneId = game.PlayerOneCode.ToGuid(),
-                PlayerTwoId = game.PlayerOneCode.ToGuid()
+                PlayerTwoId = game.PlayerTwoCode.ToGuid()
             });
 
             return _db.SaveChangesAsync();
